@@ -14,3 +14,10 @@ services:
     command: npm test
     env_file:
       - server/.env
+
+  web-test:
+    build:
+      context: .
+      target: web-build
+    working_dir: /app/web
+    command: npm test

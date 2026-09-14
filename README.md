@@ -22,7 +22,9 @@ server/
     session/          single fixed in-memory conversation state + reset
     api/              Express routes (POST /message, POST /reset, GET /health, GET /state) + serves the built UI
   tests/              mocked (fast, free, deterministic) + live (real API) test suites
-web/                  React chat test UI (chat window + phase-aware debug sidebar)
+web/
+  src/                React chat test UI (chat window + phase-aware debug sidebar)
+  tests/              component tests (Vitest + React Testing Library)
 Dockerfile, docker-compose.yml
 ```
 
@@ -79,8 +81,9 @@ if needed before running — without it, `docker compose run` silently reuses
 whatever image was last built, which can run stale code.
 
 ```bash
-docker compose run --build --rm test               # mocked LLM — fast, free, deterministic (the default/primary suite)
-docker compose run --build --rm test npm run test:live  # real Groq API calls — needs GROQ_API_KEY in server/.env
+docker compose run --build --rm test               # server: mocked LLM — fast, free, deterministic (the default/primary suite)
+docker compose run --build --rm test npm run test:live  # server: real Groq API calls — needs GROQ_API_KEY in server/.env
+docker compose run --build --rm web-test           # web: component tests (Vitest + React Testing Library)
 ```
 
 ### Locally
@@ -94,6 +97,14 @@ cd server
 npm install         # skip if you already ran this as part of Option B
 npm test            # mocked LLM — fast, free, deterministic (the default/primary suite)
 npm run test:live   # real Groq API calls — looser assertions, consumes API quota, slower
+```
+
+The frontend has its own component test suite (Vitest + React Testing Library):
+
+```bash
+cd web
+npm install   # skip if you already ran this as part of Option B
+npm test
 ```
 
 ## What it does
@@ -110,7 +121,6 @@ The core design challenge is that each part of the system needs a different amou
 | Emotional support / de-escalation | Frustration, anxiety, anger, confusion, or refusal is detected each turn and acknowledged before the agent pushes the workflow forward; a caller who keeps refusing to verify gets offered alternate ID fields, then a human transfer. | **High on phrasing, none on the persuasion cutoff.** The LLM detects emotion and composes the empathetic response, but the turn-count threshold for when to stop persuading and lean into a human-transfer offer is deterministic, not a judgment call — and it can never use empathy as a reason to skip verification or disclose anything. |
 | Human transfer / call end | Accepting a transfer offer, or completing the post-call email decision, ends the conversation in a terminal state (`ESCALATED` or `DONE`) with a fixed closing message. | **None on the transition.** Whether the caller accepted the offer, or chose yes/skip on the email, is checked with a deterministic keyword match before any LLM call — the LLM only ever phrases the offer or farewell, never decides the state transition itself. |
 | Authorized representatives | A caller phoning in on a policyholder's behalf (e.g. a family member) can verify using the *policyholder's* identity fields plus their own name; the system then checks `fixtures/representatives.json` for a matching authorized representative and simulates a consent/authorization check (`fixtures/consent_scenarios.json`) before proceeding. See `DECISIONS.md` #23 for the full design and `CONSENT_SCENARIO` in `.env.example` to demo the denied/timeout path. | **Low.** The LLM's only real judgment call is extracting whether the caller is a representative and their name from natural phrasing (e.g. "calling on behalf of my mother") — whether that representative is authorized and whether consent is confirmed are both deterministic lookups against fixture data. |
-
 
 ## Implementation notes
 
