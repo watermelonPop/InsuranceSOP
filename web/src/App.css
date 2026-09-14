@@ -1,0 +1,209 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f6f7f9;
+  color: #1a1d21;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: #1a1d21;
+  color: white;
+}
+
+.app-header h1 {
+  font-size: 1.05rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.reset-button {
+  background: #3a3f47;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.reset-button:hover {
+  background: #4b515b;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.chat-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.message {
+  max-width: 70%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  font-size: 0.92rem;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #2563eb;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: white;
+  border: 1px solid #e2e5e9;
+  border-bottom-left-radius: 4px;
+}
+
+.message.error {
+  align-self: center;
+  background: #fde8e8;
+  color: #9b1c1c;
+  border: 1px solid #f5b5b5;
+  font-size: 0.85rem;
+}
+
+.empty-state {
+  color: #8a8f98;
+  font-size: 0.9rem;
+  margin: auto;
+  text-align: center;
+}
+
+.input-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  border-top: 1px solid #e2e5e9;
+  background: white;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d3d7dd;
+  border-radius: 8px;
+  font-size: 0.92rem;
+}
+
+.input-row input:disabled {
+  background: #f0f1f3;
+}
+
+.input-row button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.input-row button:disabled {
+  background: #a9c1f2;
+  cursor: not-allowed;
+}
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: white;
+  border-left: 1px solid #e2e5e9;
+  padding: 1rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+}
+
+.sidebar h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a8f98;
+  margin: 1.1rem 0 0.4rem;
+}
+
+.sidebar h2:first-child {
+  margin-top: 0;
+}
+
+.phase-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: white;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.debug-label {
+  color: #6b7280;
+}
+
+.debug-value {
+  text-align: right;
+  word-break: break-word;
+}
+
+.field-chip {
+  display: inline-block;
+  background: #e6f4ea;
+  color: #1e7a34;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  margin: 0.1rem 0.2rem 0.1rem 0;
+}
+
+.field-chip.missing {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+@media (max-width: 720px) {
+  .sidebar {
+    display: none;
+  }
+}

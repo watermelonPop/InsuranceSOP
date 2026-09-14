@@ -1,0 +1,16 @@
+services:
+  sop-agent:
+    build: .
+    ports:
+      - "4000:4000"
+    env_file:
+      - server/.env
+
+  test:
+    build:
+      context: .
+      target: server-build
+    working_dir: /app/server
+    command: npm test
+    env_file:
+      - server/.env
